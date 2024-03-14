@@ -6,6 +6,7 @@ class CarBrand:
         self.name = name
         self.country = country
         self.founding_year = founding_year
+        self.models = []
 
     def get_info(self):
         return {

@@ -7,6 +7,8 @@ class Car:
         self.year = year
         self.vin = vin
         self.model = model
+        self.model.cars.append(self)
+        self.services = []
 
     def get_info(self):
         return {

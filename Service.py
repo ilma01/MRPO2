@@ -2,14 +2,16 @@ import datetime
 import Car
 
 class Service:
-    def __init__(self, id, date: datetime.datetime, service_type: str, mileage: int, cost: float, car: Car.Car, tasks: str = None):
+    def __init__(self, id, date: datetime.datetime, service_type: str, mileage: int, cost: float, car: Car.Car, tasks: str = None, consumables: list = None):
         self.id = id
         self.date = date
         self.service_type = service_type
         self.mileage = mileage
         self.cost = cost
         self.tasks = tasks
+        self.consumables = consumables
         self.car = car
+        self.car.services.append(self)
 
     def get_info(self):
         return {

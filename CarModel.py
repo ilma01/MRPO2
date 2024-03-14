@@ -8,6 +8,8 @@ class CarModel:
         self.body_type = body_type
         self.engine_volume = engine_volume
         self.brand = brand
+        self.brand.models.append(self)
+        self.cars = []
 
     def get_info(self):
         return {

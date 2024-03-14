@@ -18,6 +18,10 @@ model3 = CarModel.CarModel('M3', brand3, 2006, 'Sedan', 3.0)
 model4 = CarModel.CarModel('Tundra', brand1, 2015, 'OffRoad', 5.0)
 model5 = CarModel.CarModel('21054', brand4, 2006, 'Sedan', 1.6)
 
+print (brand1.name)
+for i in brand1.models:
+    print(i.name)
+
 car1 = Car.Car(model1, 200000, 1993, "XTA10532")
 car2 = Car.Car(model2, 250000, 1995, "XTA10533")
 car3 = Car.Car(model3, 352000, 2009, "XTA10534")
