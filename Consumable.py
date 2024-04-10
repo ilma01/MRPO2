@@ -1,12 +1,7 @@
-class Consumable:
-    def __init__(self, name: str, manufacturer: str, cost: float):
-        self.name = name
-        self.manufacturer = manufacturer
-        self.cost = cost
+from dataclasses import dataclass
 
-    def get_info(self):
-        return {
-            "name": self.name,
-            "manufacturer": self.manufacturer,
-            "cost": self.cost
-        }
+@dataclass(frozen=True)
+class Consumable:
+    name: str
+    manufacturer: str
+    cost: float

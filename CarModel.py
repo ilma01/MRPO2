@@ -1,21 +1,14 @@
-import datetime
-
+from datetime import datetime
+from typing import List
 import CarBrand
-class CarModel:
-    def __init__(self, name: str, brand: CarBrand.CarBrand, year: datetime.datetime.year = None, body_type: str = None, engine_volume: float = None):
-        self.name = name
-        self.year = year
-        self.body_type = body_type
-        self.engine_volume = engine_volume
-        self.brand = brand
-        self.brand.models.append(self)
-        self.cars = []
+from dataclasses import dataclass, field
+from Consumable import Consumable
 
-    def get_info(self):
-        return {
-            "brand": self.brand.get_info(),
-            "name": self.name,
-            "year": self.year,
-            "body_type": self.body_type,
-            "engine_capacity": self.engine_volume
-        }
+@dataclass(frozen=True)
+class CarModel:
+    name: str
+    brand: CarBrand
+    year: datetime.year = None
+    body_type: str = None
+    engine_volume: float = None
+    recommended_parts: List[Consumable] = field(default_factory=list)

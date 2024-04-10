@@ -1,16 +1,8 @@
-import datetime
+from datetime import datetime
+from dataclasses import dataclass
 
-
+@dataclass(frozen=True)
 class CarBrand:
-    def __init__(self, name: str, country: str = None, founding_year: datetime.datetime.year = None):
-        self.name = name
-        self.country = country
-        self.founding_year = founding_year
-        self.models = []
-
-    def get_info(self):
-        return {
-            "name": self.name,
-            "country": self.country,
-            "foundation_year": self.founding_year
-        }
+    name: str
+    country: str = None
+    founding_year: datetime.year = None

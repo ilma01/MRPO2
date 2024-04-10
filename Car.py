@@ -7,13 +7,24 @@ class Car:
         self.year = year
         self.vin = vin
         self.model = model
-        self.model.cars.append(self)
         self.services = []
-
+        self.last_service_mileage = 0
+        self.last_service_date = datetime.datetime.now()
+    def service_completed(self, mileage, service_date):
+        self.last_service_mileage = mileage
+        self.last_service_date = service_date
     def get_info(self):
         return {
-            "model": self.model.get_info(),
+            "model": self.model.name,
             "mileage": self.mileage,
             "year": self.year,
             "vin": self.vin
         }
+
+    def __eq__(self, other):
+        if not isinstance(other, Car):
+            return False
+        return (self.model == other.model and
+                self.mileage == other.mileage and
+                self.year == other.year and
+                self.vin == other.vin)
