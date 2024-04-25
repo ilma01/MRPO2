@@ -1,23 +1,27 @@
 from Repository import Repos
 
-class Consumables(Repos.FakeRepos):
+class ConsumableRepos(Repos.FakeRepos):
     def __init__(self):
         self.consumables = []
+
+    def get(self, name):
+        for consumable in self.consumables:
+            if consumable.name == name:
+                return consumable
+        return None
 
     def add(self, consumable):
         self.consumables.append(consumable)
 
     def remove(self, consumable):
-        if self.consumables:
-            for c in self.consumables:
-                if c.name == consumable.name:
-                    self.consumables.remove(c)
+        if consumable in self.consumables:
+            self.consumables.remove(consumable)
+
+    def update(self, consumable):
+        existing_consumable = self.get(consumable.name)
+        if existing_consumable:
+            self.consumables.remove(existing_consumable)
+            self.consumables.append(consumable)
 
     def get_all(self):
         return self.consumables
-
-    def get(self, name):
-        if self.consumables:
-            for c in self.consumables:
-                if c.name == name:
-                    return c

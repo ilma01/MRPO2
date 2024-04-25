@@ -1,9 +1,9 @@
 import datetime
-import Car
-from Consumable import Consumable
+from Models.Car import Car
+from Models.Consumable import Consumable
 
 class Service:
-    def __init__(self, id, date: datetime.datetime, service_type: str, cost: float, car: Car.Car, tasks: str = None, consumables: list[Consumable] = None):
+    def __init__(self, id, date: datetime.datetime, service_type: str, cost: float, car: Car, tasks: str = None, consumables: list[Consumable] = None):
         self.id = id
         self.car = car
         self.date = date

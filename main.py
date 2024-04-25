@@ -1,11 +1,7 @@
 import datetime
 import business_rules
 
-import Car
-import CarBrand
-import CarModel
-import Consumable
-import Service
+from Models import CarModel, CarBrand, Car, Service, Consumable
 from Repository import CarRep, ServiceRep
 
 brand1 = CarBrand.CarBrand('Toyota', 'Japan')
@@ -76,14 +72,14 @@ print(car1.model.recommended_parts)
 car1.model.recommended_parts.append(cons3)
 print(car1.model.recommended_parts)
 print(ser1.consumables)
-print (business_rules.check_recommended_consumables(ser1))
+print (business_rules.used_recommended_consumables(ser1))
 ser1.consumables.append(cons2)
-print (business_rules.check_recommended_consumables(ser1))
+print (business_rules.used_recommended_consumables(ser1))
 print()
-business_rules.check_service_consumables(ser1)
-business_rules.check_service_consumables(ser2)
-business_rules.check_service_consumables(ser3)
-business_rules.check_service_consumables(ser4)
+business_rules.service_consumables_presented(ser1)
+business_rules.service_consumables_presented(ser2)
+business_rules.service_consumables_presented(ser3)
+business_rules.service_consumables_presented(ser4)
 
-business_rules.check_mileage_non_negative(car1)
-business_rules.check_mileage_non_negative(car2)
+business_rules.mileage_non_negative(car1)
+business_rules.mileage_non_negative(car2)

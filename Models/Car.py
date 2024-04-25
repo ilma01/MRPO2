@@ -1,6 +1,6 @@
 import datetime
 
-import CarModel
+from Models import CarModel
 class Car:
     def __init__(self, model: CarModel.CarModel, mileage: int, year: datetime.datetime.year, vin: str):
         self.mileage = mileage

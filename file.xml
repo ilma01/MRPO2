@@ -1,0 +1,81 @@
+<data>
+	<brands>
+		<brand>
+			<name>Subaru</name>
+			<country>Japan</country>
+			<founding_year>None</founding_year>
+		</brand>
+		<brand>
+			<name>Honda</name>
+			<country>Japan</country>
+			<founding_year>None</founding_year>
+		</brand>
+		<brand>
+			<name>Lada</name>
+			<country>Russia</country>
+			<founding_year>1953</founding_year>
+		</brand>
+		<brand>
+			<name>Brand</name>
+			<country>Country</country>
+			<founding_year>1990</founding_year>
+		</brand>
+	</brands>
+	<models>
+		<model>
+			<name>Corolla</name>
+			<brand>Toyota</brand>
+		</model>
+		<model>
+			<name>Civic</name>
+			<brand>Honda</brand>
+		</model>
+	</models>
+	<cars>
+		<car>
+			<vin>1234567890</vin>
+			<brand>Toyota</brand>
+			<model>Corolla</model>
+		</car>
+		<car>
+			<vin>0987654321</vin>
+			<brand>Honda</brand>
+			<model>Civic</model>
+		</car>
+	</cars>
+	<consumables>
+		<consumable>
+			<name>Oil Filter</name>
+			<manufacturer>ACDelco</manufacturer>
+			<cost>5.99</cost>
+		</consumable>
+		<consumable>
+			<name>Engine Oil</name>
+			<manufacturer>Castrol</manufacturer>
+			<cost>29.99</cost>
+		</consumable>
+	</consumables>
+	<services>
+		<service>
+			<id>1</id>
+			<date>2024-04-26T10:00:00</date>
+			<type>Oil Change</type>
+			<cost>50.00</cost>
+			<car>1234567890</car>
+			<mileage>5000</mileage>
+			<tasks>Perform oil change and filter replacement</tasks>
+			<consumables>
+				<consumable>
+					<name>Oil Filter</name>
+					<manufacturer>ACDelco</manufacturer>
+					<cost>5.99</cost>
+				</consumable>
+				<consumable>
+					<name>Engine Oil</name>
+					<manufacturer>Castrol</manufacturer>
+					<cost>29.99</cost>
+				</consumable>
+			</consumables>
+		</service>
+	</services>
+</data>

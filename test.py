@@ -1,11 +1,7 @@
 import unittest
 from datetime import datetime, timedelta
-import Car
-import CarBrand
-import CarModel
-import Consumable
-import Service
-from business_rules import check_service_due, check_recommended_consumables, check_service_consumables, check_mileage_non_negative
+from Models import CarModel, CarBrand, Car, Service, Consumable
+from business_rules import can_go_to_service, used_recommended_consumables, service_consumables_presented, mileage_non_negative
 
 class TestBusinessRules(unittest.TestCase):
     def setUp(self):
@@ -19,39 +15,39 @@ class TestBusinessRules(unittest.TestCase):
 
     def test_check_service_due(self):
         # Проверка, что автомобиль требует обслуживания по пробегу и времени
-        self.assertFalse(check_service_due(self.car, self.current_date))
+        self.assertFalse(can_go_to_service(self.car, self.current_date))
         self.car.mileage = self.car.last_service_mileage + 5001
-        self.assertTrue(check_service_due(self.car, self.current_date))
+        self.assertTrue(can_go_to_service(self.car, self.current_date))
         self.car.mileage = self.car.last_service_mileage
         self.car.last_service_date = self.current_date - timedelta(days=185)
-        self.assertTrue(check_service_due(self.car, self.current_date))
+        self.assertTrue(can_go_to_service(self.car, self.current_date))
 
 
     def test_check_recommended_consumables(self):
         # Проверка, что все расходные материалы рекомендованные
         self.model.recommended_parts.append(self.cons_rec)
         self.service.consumables.append(self.cons_rec)
-        self.assertTrue(check_recommended_consumables(self.service))
+        self.assertTrue(used_recommended_consumables(self.service))
         self.service.consumables.append(self.cons)
-        self.assertFalse(check_recommended_consumables(self.service))
+        self.assertFalse(used_recommended_consumables(self.service))
 
     def test_check_service_consumables(self):
         # Проверка наличия списка затраченных материалов при обслуживании
         self.service.consumables = [Consumable.Consumable(name='Масло', manufacturer='Shell', cost=1), Consumable.Consumable(name='Фильтр масляный', manufacturer='Bosch', cost=1)]
-        self.assertTrue(check_service_consumables(self.service))
+        self.assertTrue(service_consumables_presented(self.service))
 
     def test_check_service_consumables_none(self):
         # Проверка отсутствия списка затраченных материалов при обслуживании
         self.service.consumables = []
-        self.assertFalse(check_service_consumables(self.service))
+        self.assertFalse(service_consumables_presented(self.service))
 
     def test_check_mileage_non_negative(self):
         # Проверка, что пробег неотрицательный
         self.car.mileage = 10000
-        self.assertTrue(check_mileage_non_negative(self.car))
+        self.assertTrue(mileage_non_negative(self.car))
 
         self.car.mileage = -500  # Отрицательный пробег
-        self.assertFalse(check_mileage_non_negative(self.car))
+        self.assertFalse(mileage_non_negative(self.car))
 
 if __name__ == '__main__':
     unittest.main()

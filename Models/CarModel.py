@@ -1,8 +1,8 @@
 from datetime import datetime
 from typing import List
-import CarBrand
+from Models import CarBrand
 from dataclasses import dataclass, field
-from Consumable import Consumable
+from Models.Consumable import Consumable
 
 @dataclass(frozen=True)
 class CarModel:

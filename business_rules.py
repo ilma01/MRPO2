@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 #Обслуживание автомобиля должно проводиться только после достижения определенного пробега или истечения определенного времени с последнего обслуживания
-def check_service_due(car, current_date):
+def can_go_to_service(car, current_date = datetime.now()):
     service_interval_mileage = 5000  # Интервал обслуживания по пробегу
     service_interval_months = 6    # Интервал обслуживания в месяцах
 
@@ -16,7 +16,7 @@ def check_service_due(car, current_date):
         return False
 
 #При обслуживании автомобиля должны использоваться только рекомендованные производителем расходные материалы
-def check_recommended_consumables(service):
+def used_recommended_consumables(service):
     for consumable in service.consumables:
         if consumable not in service.car.model.recommended_parts:
             print (f'При обслуживании использовался расходник {consumable.name}, которого нет в списке рекомендованных производителем {service.car.model.brand.name} {service.car.model.name}')
@@ -24,7 +24,7 @@ def check_recommended_consumables(service):
     print ('Все расходники, использованные при обслуживании автомобиля рекомендованы для использования производителем')
     return True
 #Для каждого обслуживания должен быть предоставлен полный список затраченных материалов
-def check_service_consumables(service):
+def service_consumables_presented(service):
     if not service.consumables:
         print (f'При ТО {service.date.strftime("%Y.%m.%d")} не был представлен список затраченных материалов')
         return False
@@ -34,10 +34,8 @@ def check_service_consumables(service):
             print (f'{con.name} - {con.manufacturer}')
         return True
 #Пробег автомобиля не может быть отрицательным
-def check_mileage_non_negative(car):
+def mileage_non_negative(car):
     if car.mileage >= 0:
-        print (f'Пробег {car.model.brand.name} {car.model.name} не отрицательный')
         return True
-    print(f'Пробег {car.model.brand.name} {car.model.name} отрицательный')
-    return False
+    raise Exception(f'Пробег {car.model.brand.name} {car.model.name} отрицательный')
 
