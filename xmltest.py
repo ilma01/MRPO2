@@ -2,15 +2,22 @@ from Procedures import CarProcedure, CarBrandProcedure, CarModelProcedure, Servi
 from Repository.XMLRepos import CarBrandXMLRepos, CarModelXMLRepos, CarXMLRepos, ConsumableXMLRepos, ServiceXMLRepos
 
 file = 'file.xml'
-CarUC = CarProcedure.CarProcedure(CarXMLRepos(file))
-BrandUC = CarBrandProcedure.CarBrandProcedure(CarBrandXMLRepos(file))
-ModelUC = CarModelProcedure.CarModelProcedure(CarModelXMLRepos(file))
-ServiceUC = ServiceProcedure.ServiceProcedure(ServiceXMLRepos(file))
-ConsUC = ConsumableProcedure.ConsumableProcedure(ConsumableXMLRepos(file))
 
-BrandUC.r
+BrandRepos = CarBrandXMLRepos(file)
+ModelRepos = CarModelXMLRepos(file, BrandRepos)
+CarRepos = CarXMLRepos(file, ModelRepos)
+ServiceRepos = ServiceXMLRepos(file)
+ConsRepos = ConsumableXMLRepos(file)
 
-# ModelUC.add_model('Supra', BrandUC.get_brand('Toyota'), body_type='Sedan')
+CarUC = CarProcedure.CarProcedure(CarRepos)
+BrandUC = CarBrandProcedure.CarBrandProcedure(BrandRepos)
+ModelUC = CarModelProcedure.CarModelProcedure(ModelRepos)
+ServiceUC = ServiceProcedure.ServiceProcedure(ServiceRepos)
+ConsUC = ConsumableProcedure.ConsumableProcedure(ConsRepos)
+
+#CarUC.update_car_mileage(512000, 'VIN534250')
+
+#ModelUC.add_model('Supra', BrandUC.get_brand('Toyota'), body_type='Sedan')
 # ModelUC.add_model('Impreza', BrandUC.get_brand('Subaru'))
 # ModelUC.update_model('Supra', body_type='Coupe')
 #
@@ -18,7 +25,7 @@ BrandUC.r
 # CarUC.add_car(ModelUC.get_model('Supra'), 0, vin='XTA2106')
 # CarUC.add_car(ModelUC.get_model('Supra'), 500)
 # CarUC.add_car(ModelUC.get_model('Impreza'), 111)
-# CarUC.update_car_mileage(66666, 'XTA2105')
+CarUC.update_car_mileage(666666, 'XTA21654305')
 #
 # print('---------------')
 # for i in CarUC.get_all_cars():

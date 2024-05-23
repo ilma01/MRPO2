@@ -8,7 +8,7 @@ from Models.Consumable import Consumable
 class CarModel:
     name: str
     brand: CarBrand
-    year: datetime.year = None
+    year: datetime.year = datetime.now()
     body_type: str = None
     engine_volume: float = None
     recommended_parts: List[Consumable] = field(default_factory=list)

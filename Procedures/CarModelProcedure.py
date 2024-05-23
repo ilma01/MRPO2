@@ -19,7 +19,7 @@ class CarModelProcedure:
                   recommended_parts: List[Consumable] = []):
         if not brand:
             raise ValueError("Такого бренда не существует")
-        existing_model = self.car_model_repository.get_by_name_and_brand(name, brand)
+        existing_model = self.car_model_repository.get(name)
         if existing_model:
             warnings.warn("Модель автомобиля с указанным именем уже существует", UserWarning)
         else:

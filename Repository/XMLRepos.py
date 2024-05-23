@@ -79,12 +79,10 @@ class CarBrandXMLRepos(XMLRepos):
 
     def _xml_to_car_brand(self, brand_element):
         name = brand_element.find("name").text
-        country = brand_element.find("country").text if brand_element.find("country") is not str(None) else None
-        founding_year_element = brand_element.find("founding_year")
-        if founding_year_element.text == 'None':
-            founding_year = None
-        else:
-            founding_year = int(founding_year_element.text)
+        country_text = brand_element.find("country").text
+        country = country_text if country_text != "None" else None
+        founding_year_text = brand_element.find("founding_year").text
+        founding_year = int(founding_year_text) if founding_year_text != "None" else None
         return CarBrand(name=name, country=country, founding_year=founding_year)
 
     def _car_brand_to_xml(self, brand, brand_element):
@@ -110,9 +108,10 @@ class CarBrandXMLRepos(XMLRepos):
             founding_year_element.text = str(brand.founding_year)
 
 class CarModelXMLRepos(XMLRepos):
-    def __init__(self, file_path):
+    def __init__(self, file_path, car_brand_repository: CarBrandXMLRepos):
         super().__init__(file_path)
         self.root = self._load_xml()
+        self.car_brand_repository = car_brand_repository
 
     def _load_xml(self):
         try:
@@ -161,37 +160,36 @@ class CarModelXMLRepos(XMLRepos):
         self._save_xml()
 
     def remove(self, model):
-        model_element = self.get(model.name)
+        model_element = self.root.find(".//models/model[name='{}']".format(model.name))
         if model_element is not None:
-            self.root.remove(model_element)
+            self.root.find(".//models").remove(model_element)
             self._save_xml()
 
     def update(self, model):
         model_element = self.get(model.name)
         if model_element is not None:
-            self._car_model_to_xml(model, model_element)
+            self.add(model)
+            self.remove(model_element)
             self._save_xml()
 
     def get_all(self):
         models = []
-        for model_element in self.root.findall(".//model"):
+        for model_element in self.root.findall(".//models/model"):
             models.append(self._xml_to_car_model(model_element))
         return models
 
     def _xml_to_car_model(self, model_element):
         name = model_element.find("name").text
         brand_name = model_element.find("brand").text
-        brand = CarBrand(name=brand_name)
-        year = int(model_element.find("year").text) if model_element.find("year") is not None else None
-        body_type = model_element.find("body_type").text if model_element.find("body_type") is not None else None
-        engine_volume = float(model_element.find("engine_volume").text) if model_element.find("engine_volume") is not None else None
-        recommended_parts = []
-        for part_element in model_element.findall("recommended_parts/consumable"):
-            part_name = part_element.find("name").text
-            manufacturer = part_element.find("manufacturer").text
-            cost = float(part_element.find("cost").text)
-            recommended_parts.append(Consumable(name=part_name, manufacturer=manufacturer, cost=cost))
-        return CarModel(name=name, brand=brand, year=year, body_type=body_type, engine_volume=engine_volume, recommended_parts=recommended_parts)
+        year = int(model_element.find("year").text)
+        body_type_text = model_element.find("body_type").text
+        body_type = str(body_type_text) if body_type_text != "None" else None
+        engine_volume_text = model_element.find("engine_volume").text
+        engine_volume = float(engine_volume_text) if engine_volume_text != "None" else None
+
+        brand = self.car_brand_repository.get(brand_name)
+
+        return CarModel(name=name, brand=brand, year=year, body_type=body_type, engine_volume=engine_volume)
 
     def _car_model_to_xml(self, model, model_element):
         name_element = model_element.find("name")
@@ -203,10 +201,10 @@ class CarModelXMLRepos(XMLRepos):
 
         brand_element = model_element.find("brand")
         if brand_element is not None:
-            brand_element.text = model.brand
+            brand_element.text = model.brand.name
         else:
             brand_element = ET.SubElement(model_element, "brand")
-            brand_element.text = model.brand
+            brand_element.text = model.brand.name
 
         year_element = model_element.find("year")
         if year_element is not None:
@@ -215,10 +213,25 @@ class CarModelXMLRepos(XMLRepos):
             year_element = ET.SubElement(model_element, "year")
             year_element.text = str(model.year)
 
+        body_type_element = model_element.find("body_type")
+        if body_type_element is not None:
+            body_type_element.text = model.body_type if model.body_type is not None else "None"
+        else:
+            body_type_element = ET.SubElement(model_element, "body_type")
+            body_type_element.text = model.body_type if model.body_type is not None else "None"
+
+        engine_volume_element = model_element.find("engine_volume")
+        if engine_volume_element is not None:
+            engine_volume_element.text = str(model.engine_volume) if model.engine_volume is not None else "None"
+        else:
+            engine_volume_element = ET.SubElement(model_element, "engine_volume")
+            engine_volume_element.text = str(model.engine_volume) if model.engine_volume is not None else "None"
+
 class CarXMLRepos(XMLRepos):
-    def __init__(self, file_path):
+    def __init__(self, file_path, car_model_repository: CarModelXMLRepos):
         super().__init__(file_path)
         self.root = self._load_xml()
+        self.car_model_repository = car_model_repository
 
     def _load_xml(self):
         try:
@@ -267,38 +280,78 @@ class CarXMLRepos(XMLRepos):
         self._save_xml()
 
     def remove(self, car):
-        car_element = self.get(car.vin)
+        car_element = self.root.find(".//cars/car[vin='{}']".format(car.vin))
         if car_element is not None:
-            self.root.remove(car_element)
+            self.root.find(".//cars").remove(car_element)
             self._save_xml()
 
     def update(self, car):
         car_element = self.get(car.vin)
         if car_element is not None:
-            self._car_to_xml(car, car_element)
+            self.add(car)
+            self.remove(car_element)
             self._save_xml()
 
     def get_all(self):
         cars = []
-        for car_element in self.root.findall(".//car"):
+        for car_element in self.root.findall(".//cars/car"):
             cars.append(self._xml_to_car(car_element))
         return cars
 
     def _xml_to_car(self, car_element):
-        vin = car_element.find("vin").text
-        brand = car_element.find("brand").text
-        model = car_element.find("model").text
+        vin_text = car_element.find("vin").text
+        vin = str(vin_text) if vin_text != "None" else None
+        model_name = car_element.find("model").text
         mileage = int(car_element.find("mileage").text)
         year = int(car_element.find("year").text)
-        car_model = CarModel(name=model, brand=CarBrand(name=brand), year=year)
-        return Car(model=car_model, mileage=mileage, year=year, vin=vin)
+        model = self.car_model_repository.get(model_name)
+        car = Car(model=model, mileage=mileage, year=year, vin=vin)
+        car.last_service_mileage = int(car_element.find("last_service_mileage").text)
+        car.last_service_date = datetime.strptime(car_element.find("last_service_date").text, "%Y-%m-%d")
+        return car
 
     def _car_to_xml(self, car, car_element):
-        car_element.find("vin").text = car.vin
-        car_element.find("brand").text = car.model.brand.name
-        car_element.find("model").text = car.model.name
-        car_element.find("mileage").text = str(car.mileage)
-        car_element.find("year").text = str(car.year)
+        vin_element = car_element.find("vin")
+        if vin_element is not None:
+            vin_element.text = car.vin
+        else:
+            vin_element = ET.SubElement(car_element, "vin")
+            vin_element.text = car.vin
+
+        model_element = car_element.find("model")
+        if model_element is not None:
+            model_element.text = car.model.name
+        else:
+            model_element = ET.SubElement(car_element, "model")
+            model_element.text = car.model.name
+
+        mileage_element = car_element.find("mileage")
+        if mileage_element is not None:
+            mileage_element.text = str(car.mileage)
+        else:
+            mileage_element = ET.SubElement(car_element, "mileage")
+            mileage_element.text = str(car.mileage)
+
+        year_element = car_element.find("year")
+        if year_element is not None:
+            year_element.text = str(car.year)
+        else:
+            year_element = ET.SubElement(car_element, "year")
+            year_element.text = str(car.year)
+
+        last_service_mileage_element = car_element.find("last_service_mileage")
+        if last_service_mileage_element is not None:
+            last_service_mileage_element.text = str(car.last_service_mileage)
+        else:
+            last_service_mileage_element = ET.SubElement(car_element, "last_service_mileage")
+            last_service_mileage_element.text = str(car.last_service_mileage)
+
+        last_service_date_element = car_element.find("last_service_date")
+        if last_service_date_element is not None:
+            last_service_date_element.text = str(car.last_service_date)
+        else:
+            last_service_date_element = ET.SubElement(car_element, "last_service_date")
+            last_service_date_element.text = str(car.last_service_date)
 
 class ConsumableXMLRepos(XMLRepos):
     def __init__(self, file_path):

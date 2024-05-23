@@ -7,7 +7,7 @@
 		</brand>
 		<brand>
 			<name>Honda</name>
-			<country>Japan</country>
+			<country>None</country>
 			<founding_year>None</founding_year>
 		</brand>
 		<brand>
@@ -20,27 +20,74 @@
 			<country>Country</country>
 			<founding_year>1990</founding_year>
 		</brand>
+		<brand>
+			<name>Toyota</name>
+			<country>Japan</country>
+			<founding_year>None</founding_year>
+		</brand>
 	</brands>
 	<models>
 		<model>
-			<name>Corolla</name>
-			<brand>Toyota</brand>
+			<name>Impreza</name>
+			<brand>Subaru</brand>
+			<year>2024</year>
+			<body_type>Sedan</body_type>
+			<engine_volume>None</engine_volume>
 		</model>
 		<model>
 			<name>Civic</name>
 			<brand>Honda</brand>
+			<year>2003</year>
+			<body_type>None</body_type>
+			<engine_volume>None</engine_volume>
+		</model>
+		<model>
+			<name>Corolla</name>
+			<brand>Toyota</brand>
+			<year>2003</year>
+			<body_type>None</body_type>
+			<engine_volume>1.6</engine_volume>
+		</model>
+		<model>
+			<name>Supra</name>
+			<brand>Toyota</brand>
+			<year>2024</year>
+			<body_type>Sedan</body_type>
+			<engine_volume>None</engine_volume>
 		</model>
 	</models>
 	<cars>
 		<car>
-			<vin>1234567890</vin>
-			<brand>Toyota</brand>
+			<vin>VIN534A2T50</vin>
 			<model>Corolla</model>
+			<mileage>302000</mileage>
+			<year>2024</year>
+			<last_service_mileage>0</last_service_mileage>
+			<last_service_date>2024-04-25</last_service_date>
 		</car>
 		<car>
-			<vin>0987654321</vin>
-			<brand>Honda</brand>
+			<vin>VIN21110</vin>
+			<model>Impreza</model>
+			<mileage>5000</mileage>
+			<year>2024</year>
+			<last_service_mileage>0</last_service_mileage>
+			<last_service_date>2024-04-25</last_service_date>
+		</car>
+		<car>
+			<vin>VIN534250</vin>
 			<model>Civic</model>
+			<mileage>512000</mileage>
+			<year>2024</year>
+			<last_service_mileage>0</last_service_mileage>
+			<last_service_date>2024-04-25</last_service_date>
+		</car>
+		<car>
+			<vin>XTA21654305</vin>
+			<model>Supra</model>
+			<mileage>666666</mileage>
+			<year>2024</year>
+			<last_service_mileage>0</last_service_mileage>
+			<last_service_date>2024-04-25 00:00:00</last_service_date>
 		</car>
 	</cars>
 	<consumables>

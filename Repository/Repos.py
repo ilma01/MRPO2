@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
 class FakeRepos(ABC):
-    def __init__(self, file_path):
-        self.file_path = file_path
+    def __init__(self, session):
+        self.session = session
 
     @abstractmethod
     def add(self, item):
